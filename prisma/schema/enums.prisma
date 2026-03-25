@@ -1,0 +1,22 @@
+enum Role{
+    USER
+    ADMIN
+
+    
+}
+ enum UserStatus {
+    BLOCKED
+    DELETED
+    ACTIVE
+
+ }
+ enum AppointmentStatus {
+  SCHEDULED
+  INPROGRESS
+  COMPLETED
+  CANCELED
+}
+enum PaymentStatus {
+  PAID
+  UNPAID
+}
