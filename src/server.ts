@@ -1,9 +1,10 @@
 import app from "./app"
+import { envVars } from "./config/env"
 
 const bootstrap =()=>{
   try {
-    app.listen(5000,()=>{
-      console.log(`server is running on port 5000`)
+    app.listen(envVars.PORT,()=>{
+      console.log(`server is running on port ${envVars.PORT}`)
       
     })
   } catch (error) {
