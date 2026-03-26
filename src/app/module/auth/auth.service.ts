@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import status from "http-status";
 import AppError from "../../errorHelpers/AppError";
 import { auth } from "../../lib/auth";
@@ -235,6 +236,40 @@ const resetPassword=async(email:string,otp:string,newPassword:string)=>{
         where:{userId:isUserExists.id}
     })
 }
+const googleLoginSuccess=async(session:Record<string,any>)=>{
+
+    const isUserExists= await prisma.user.findUnique({
+        where:{
+            id:session.user.id
+        }
+    })
+    if(!isUserExists){
+        await prisma.user.create({
+            data:{
+                id:session.user.id,
+                name:session.user.name,
+                email:session.user.email
+            }
+        })
+    }
+    const accessToken = tokenUtils.getAccessToken({
+        userId: session.user.id,
+        role: session.user.role,
+        name: session.user.name,
+    });
+
+    const refreshToken = tokenUtils.getRefreshToken({
+        userId: session.user.id,
+        role: session.user.role,
+        name: session.user.name,
+    });
+
+    return {
+        accessToken,
+        refreshToken,
+    }
+}
+
 export const authService={
     registerUser,
     loginUser,
@@ -243,5 +278,7 @@ export const authService={
     changePassword,
     logoutUser,
     forgetPassword,
-    resetPassword
+    resetPassword,
+    
+    googleLoginSuccess
 }
