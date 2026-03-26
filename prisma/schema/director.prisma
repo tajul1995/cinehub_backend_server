@@ -1,0 +1,10 @@
+model Director {
+  id      String @id @default(uuid())
+  name    String
+  role    String @default("DIRECTOR")
+  
+
+  movieId String
+  movie   Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  @@map("director")
+}

@@ -1,12 +1,38 @@
+
 import { Request, Response } from "express"
 import { movieService } from "./movie.service"
 import { catchAsync } from "../../shared/catchAsynce"
 import { sendResponce } from "../../shared/sendResponce"
 import httpStatus from "http-status";
+import { safeParseJSON } from "../../utiles/safeParse";
 
 const createMovie=async(req:Request,res:Response)=>{
     try{
-        const movie=await movieService.createMovie(req.body)
+        const body = req.body;
+
+    const payload = {
+      movieName: body.movieName,
+      type: body.type,
+      categories: safeParseJSON(body.categories) || [],
+
+      poster: body.poster,
+      trailerUrl: body.trailerUrl,
+      videoUrl: body.videoUrl,
+      rating: Number(body.rating) || 0,
+      duration: Number(body.duration),
+      publishedYear: body.publishedYear
+    ? Number(body.publishedYear)
+    : null,
+
+      story: body.story,
+     
+
+     
+      cast: safeParseJSON(body.cast) || [],
+      directors: safeParseJSON(body.directors) || [],
+      producers: safeParseJSON(body.producers) || [],
+    };
+        const movie=await movieService.createMovie(payload)
         res.status(200).json(movie)
     }catch(err){
         console.log(err)
@@ -14,7 +40,7 @@ const createMovie=async(req:Request,res:Response)=>{
 
 const getAllMovie=async(req:Request,res:Response)=>{
     try{
-        const movie=await movieService.getAllMovie()
+        const movie=await movieService.getAllMovie(req.query)
         res.status(200).json(movie)
     }catch(err){
         console.log(err)

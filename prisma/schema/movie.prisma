@@ -10,12 +10,12 @@ model Movie {
 
   rating       Float    @default(0)
   duration     Int
+  publishedYear Int?
 
   story        String?
-  auditorium   String   @default("COMPLEX 1")
-
-  seatStandard Int
-  seatRecliner Int
+  cast         Cast[]
+  directors    Director[]
+  producers    Producer[]
 
   
   createdAt    DateTime @default(now())

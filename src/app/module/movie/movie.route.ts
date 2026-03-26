@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { movieController } from "./movie.controller";
 
+
 const router=Router()
 router.post('/',movieController.createMovie)
 router.get('/',movieController.getAllMovie)

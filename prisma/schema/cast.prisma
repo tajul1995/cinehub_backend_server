@@ -1,0 +1,10 @@
+model Cast {
+  id      String @id @default(uuid())
+  name    String
+  role    String @default("ACTOR")
+  
+
+  movieId String
+  movie   Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  @@map("cast")
+}
