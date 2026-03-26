@@ -11,12 +11,13 @@ model Movie {
   rating       Float    @default(0)
   duration     Int
   publishedYear Int?
+  
 
   story        String?
   cast         Cast[]
   directors    Director[]
   producers    Producer[]
-
+ 
   
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
