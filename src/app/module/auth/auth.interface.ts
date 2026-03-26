@@ -10,3 +10,7 @@ export  interface RegisterUserPayload{
     email:string,
     password:string
 }
+export interface ChangePasswordPaytload{
+    currentPassword:string
+    newPassword:string
+ }

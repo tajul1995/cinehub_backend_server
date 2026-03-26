@@ -7,6 +7,7 @@ import { sendResponce } from '../../shared/sendResponce';
 import status from "http-status";
 import { tokenUtils } from "../../utiles/token";
 import AppError from "../../errorHelpers/AppError";
+import { cookieUtils } from "../../utiles/cookies";
 
 const registerUser=catchAsync(async(req:Request,res:Response)=>{
     const Payload=req.body
@@ -76,9 +77,53 @@ const getNewToken=async(req:Request,res:Response)=>{
   
     
 }
+const changePassword=catchAsync(async(req:Request,res:Response)=>{
+    const Payload=req.body
+    const betterAuthSession=req.cookies["better-auth.session_token"]
+    const result=await authService.changePassword(Payload,betterAuthSession)
+    const {accessToken,refreshToken,token}=result
+    tokenUtils.setAccessTokenCookie(res,accessToken)
+    tokenUtils.setRefreshTokenCookie(res,refreshToken)
+    tokenUtils.setBetterAuthSessionCookies(res,token as string)
+    sendResponce(res,{
+        httpStatuscode:status.OK,
+        success:true,
+        message:"Password changed successfully",
+        data:result
+    })
+})
+const logoutUser=catchAsync(async(req:Request,res:Response)=>{
+    const betterAuthSession=req.cookies["better-auth.session_token"]
+    const result=await authService.logoutUser(betterAuthSession)
+    cookieUtils.deleteCookie(res,"better-auth.session_token",{
+        httpOnly:true,
+        secure:true,
+        sameSite:"none",
+    })
+    cookieUtils.deleteCookie(res,"refreshToken",{
+        httpOnly:true,
+        secure:true,
+        sameSite:"none",
+        
+    })
+    cookieUtils.deleteCookie(res,"accessToken",{
+        httpOnly:true,
+        secure:true,
+        sameSite:"none",
+    })
+    sendResponce(res,{
+        httpStatuscode:status.OK,
+        success:true,
+        message:"User logged out successfully",
+        data:result
+    })
+})
+
 export const AuthController={
     registerUser,
     loginUser,
     getMe,
-    getNewToken
+    getNewToken,
+    changePassword,
+    logoutUser
 }
