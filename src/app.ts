@@ -3,11 +3,13 @@ import express, { Request, Response } from 'express';
 
 import { indexRoute } from './app/routes';
 import { notFound } from './app/middlewares/notFound';
+import cookieParser from 'cookie-parser';
 const app=express();
 app.use(express.urlencoded({ extended: true }));
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+app.use(cookieParser())
  app.use('/api/v1',indexRoute)
 // Basic route
 app.get('/', (req: Request, res: Response) => {
