@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OTP Verification</title>
+</head>
+
+<body style="margin:0; padding:0; background:#0f172a; font-family:Arial, sans-serif;">
+
+  <table width="100%" cellpadding="0" cellspacing="0" style="padding:40px 0;">
+    <tr>
+      <td align="center">
+
+```
+    <!-- Card -->
+    <table width="420" cellpadding="0" cellspacing="0" 
+      style="background:#ffffff; border-radius:16px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.2);">
+
+      <!-- Header -->
+      <tr>
+        <td style="background:linear-gradient(135deg,#6366f1,#9333ea); padding:25px; text-align:center;">
+          <h1 style="color:#fff; margin:0; font-size:22px;">🎬 CineHub</h1>
+          <p style="color:#e0e7ff; margin:5px 0 0;">Reset your password</p>
+        </td>
+      </tr>
+
+      <!-- Body -->
+      <tr>
+        <td style="padding:30px; text-align:center;">
+
+          <h2 style="margin:0 0 10px; color:#111827;">
+            Hello <%= name %> 👋
+          </h2>
+
+          <p style="color:#6b7280; font-size:14px; margin-bottom:25px;">
+            Use the OTP below to complete your verification.  
+            This code will expire in <b>5 minutes</b>.
+          </p>
+
+          <!-- OTP BOX -->
+          <div style="
+            font-size:28px;
+            letter-spacing:8px;
+            font-weight:bold;
+            background:#f1f5f9;
+            padding:15px 20px;
+            border-radius:10px;
+            display:inline-block;
+            color:#111827;
+            margin-bottom:25px;
+          ">
+            <%= otp %>
+          </div>
+
+          <p style="font-size:13px; color:#9ca3af;">
+            If you didn’t request this, you can safely ignore this email.
+          </p>
+
+        </td>
+      </tr>
+
+      <!-- Footer -->
+      <tr>
+        <td style="background:#f9fafb; padding:15px; text-align:center; font-size:12px; color:#6b7280;">
+          © <%= new Date().getFullYear() %> CineHub. All rights reserved.
+        </td>
+      </tr>
+
+    </table>
+
+  </td>
+</tr>
+```
+
+  </table>
+
+</body>
+</html>

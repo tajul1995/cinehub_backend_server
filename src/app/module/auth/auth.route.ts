@@ -10,4 +10,6 @@ router.post("/register",AuthController.registerUser)
  router.post("/token-refresh", AuthController.getNewToken)
  router.post("/change-password",checkAuth(Role.USER,Role.ADMIN),AuthController.changePassword)
  router.post("/logout",checkAuth(Role.USER,Role.ADMIN),AuthController.logoutUser)
+ router.post("/forget-password",AuthController.forgetPassword)
+ router.post("/reset-password",AuthController.resetPassword)
 export const authRoute=router

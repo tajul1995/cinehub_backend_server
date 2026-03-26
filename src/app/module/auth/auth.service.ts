@@ -7,6 +7,7 @@ import { ChangePasswordPaytload, LoginPayload, RegisterUserPayload } from "./aut
 import { jwtUtils } from "../../utiles/jwt";
 import { JwtPayload } from "jsonwebtoken";
 import { envVars } from "../../../config/env";
+import { UserStatus } from "../../../generated/prisma/enums";
 
 
 
@@ -199,13 +200,48 @@ const logoutUser= async(sessionToken:string)=>{
         })
     })
 }
-
-
+const forgetPassword=async(email:string)=>{
+    const isUserExists= await prisma.user.findUnique({
+        where:{email}
+    })
+    if(!isUserExists){
+        throw new AppError(status.NOT_FOUND,"User not found")
+    }
+    
+    if(isUserExists.status===UserStatus.BLOCKED || isUserExists.status===UserStatus.DELETED){
+        throw new AppError(status.UNAUTHORIZED,"User is blocked or deleted")
+    }
+     await auth.api.requestPasswordResetEmailOTP({
+        body:{email}
+    })
+    
+}
+const resetPassword=async(email:string,otp:string,newPassword:string)=>{
+    const isUserExists= await prisma.user.findUnique({
+        where:{email}
+    })
+    if(!isUserExists){
+        throw new AppError(status.NOT_FOUND,"User not found")
+    }
+    
+    if(isUserExists.status===UserStatus.BLOCKED || isUserExists.status===UserStatus.DELETED){
+        throw new AppError(status.UNAUTHORIZED,"User is blocked or deleted")
+    }
+     await auth.api.resetPasswordEmailOTP({
+        body:{email,otp,password:newPassword}
+    })
+   
+    await prisma.session.deleteMany({
+        where:{userId:isUserExists.id}
+    })
+}
 export const authService={
     registerUser,
     loginUser,
     getMe,
     getNewToken,
     changePassword,
-    logoutUser
+    logoutUser,
+    forgetPassword,
+    resetPassword
 }
