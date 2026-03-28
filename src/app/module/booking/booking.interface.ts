@@ -1,3 +1,5 @@
+import { AppointmentStatus, PaymentStatus } from "../../../generated/prisma/enums";
+
 export interface IBookAppointmentPayload {
     movieId  : string,
     
@@ -5,6 +7,6 @@ export interface IBookAppointmentPayload {
 
 export interface IUpdateBookingPayload {
     
-    paymentStatus? : string,
-    status? : string,
+    paymentStatus? :PaymentStatus ,
+    status? : AppointmentStatus,
 }

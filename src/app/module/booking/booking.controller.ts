@@ -18,6 +18,32 @@ const createBooking=catchAsync(async(req:Request,res:Response)=>{
 
     
 })
+const getSingleBooking=catchAsync(async(req:Request,res:Response)=>{
+    const user=req.user
+    const result=await bookingService.getSingleBooking(user.userId)
+    sendResponce(res,{
+        httpStatuscode:status.OK,
+        success:true,
+        message:"get single booking",
+        data:result
+    })
+    
+})
+const updateBooking=catchAsync(async(req:Request,res:Response)=>{
+        const payload=req.body
+        const user=req.user
+        
+        const result=await bookingService.updateBooking(payload,user)
+        sendResponce(res,{
+            httpStatuscode:status.OK,
+            success:true,
+            message:"Booking updated successfully",
+            data:result
+        })
+    
+})
 export const bookingController={
-    createBooking
+    createBooking,
+    getSingleBooking,
+    updateBooking
 }
