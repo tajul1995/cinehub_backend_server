@@ -20,3 +20,7 @@ enum PaymentStatus {
   PAID
   UNPAID
 }
+enum ReviewStatus{
+  PENDING
+  APPROVED
+}
