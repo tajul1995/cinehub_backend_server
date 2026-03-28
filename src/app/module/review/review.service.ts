@@ -19,8 +19,16 @@ const updateReview=async(Payload:IReviewUpdatePayload,user:IRequestUser)=>{
     return await prisma.review.update({where:{userId:user.userId},data:Payload})
     
 }
+const deleteReview=async(user:IRequestUser)=>{
+    if(user.role===Role.ADMIN){
+        return await prisma.review.deleteMany()
+    }
+    return await prisma.review.delete({where:{userId:user.userId}})
+    
+}
 export const reviewService={
     createReview,
     getReview,
-    updateReview
+    updateReview,
+    deleteReview
 }
