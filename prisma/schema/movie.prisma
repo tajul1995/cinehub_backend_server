@@ -1,27 +1,29 @@
 model Movie {
-  id           String   @id @default(uuid(7))
-  movieName    String
-  type         String   @default("normal")
-  categories   String[]
+  id            String   @id @default(uuid())
+  movieName     String
+  type          String   @default("normal")
+  categories    String[]
+  price         Int?     
+  poster        String?
+  trailerUrl    String?
+  videoUrl      String?
 
-  poster       String?
-  trailerUrl   String?
-  videoUrl     String?
-
-  rating       Float    @default(0)
-  duration     Int
+  rating        Float    @default(0)
+  duration      Int
   publishedYear Int?
-  
 
-  story        String?
-  cast         Cast[]
-  directors    Director[]
-  producers    Producer[]
- 
-  
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  story         String?
 
-  @@index([type],name:"idx_movie_type") 
+  cast       Cast[]
+  directors  Director[]
+  producers  Producer[]
+
+  bookings   Booking[]  
+  reviews    Review[]    
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([type], name: "idx_movie_type")
   @@map("movie")
 }

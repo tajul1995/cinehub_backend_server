@@ -1,14 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+
 import status from 'http-status';
 import AppError from '../../errorHelpers/AppError';
 import { prisma } from '../../lib/prisma';
 
-const createMovie= async (payload: any) => {
+ const createMovie= async (payload: any) => {
   const {
     movieName,
     type,
     categories,
+    price,
     poster,
     trailerUrl,
     videoUrl,
@@ -20,6 +22,9 @@ const createMovie= async (payload: any) => {
     cast,
     directors,
     producers,
+    bookings,
+    reviews,
+    
   } = payload;
 const findMovie=await prisma.movie.findFirst({where:{movieName:payload.movieName}})
 if(findMovie){
@@ -30,6 +35,7 @@ if(findMovie){
       movieName,
       type,
       categories,
+      price,
 
       poster,
       trailerUrl,
@@ -56,17 +62,31 @@ if(findMovie){
       producers: {
         create: producers,
       },
+      bookings: {
+        create: bookings,
+      },
+      reviews: {
+        create: reviews,
+      },
     },
     include: {
       
       cast: true,
       directors: true,
       producers: true,
+      bookings: true,
+      reviews: true,
     },
   });
 
   return movie;
 };
+
+
+
+// const createMovie=async(payload:any)=>{return await prisma.movie.create({data:payload})}
+
+
 
 const getAllMovie=async (query: any) => {
   const {
@@ -182,7 +202,10 @@ const getAllMovie=async (query: any) => {
     },
     data,
   };}
-const getMovieById=async(id:string)=>{return await prisma.movie.findUnique({where:{id}})}
+const getMovieById=async(id:string)=>{return await prisma.movie.findUnique({where:{id},include:{cast:true,directors:true,producers:true,bookings:true,reviews:true}
+
+
+})}
 const deleteMovieById=async(id:string)=>{return await prisma.movie.delete({where:{id}})}
 export const movieService={
     createMovie,

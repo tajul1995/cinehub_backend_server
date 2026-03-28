@@ -14,7 +14,8 @@ const createMovie=async(req:Request,res:Response)=>{
       movieName: body.movieName,
       type: body.type,
       categories: safeParseJSON(body.categories) || [],
-
+      price: Number(body.price) || 0,
+    
       poster: body.poster,
       trailerUrl: body.trailerUrl,
       videoUrl: body.videoUrl,
@@ -31,6 +32,9 @@ const createMovie=async(req:Request,res:Response)=>{
       cast: safeParseJSON(body.cast) || [],
       directors: safeParseJSON(body.directors) || [],
       producers: safeParseJSON(body.producers) || [],
+      booking: safeParseJSON(body.booking) || [],
+      reviews: safeParseJSON(body.reviews) || [],
+      
     };
         const movie=await movieService.createMovie(payload)
         res.status(200).json(movie)
