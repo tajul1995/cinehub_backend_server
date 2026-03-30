@@ -9,9 +9,11 @@ import cookieParser from 'cookie-parser';
 import { auth } from './app/lib/auth';
 import path from 'path';
 import { envVars } from './config/env';
+import { PaymentController } from './app/module/payment/payment.controller';
 const app=express();
 app.set("view engine", "ejs");
 app.set("views", path.resolve(process.cwd(), `src/app/templates`));
+app.post("/webhook", express.raw({ type: "application/json" }), PaymentController.handleStripeWebhookEvent);
 app.use(cors({
     origin : [envVars.FORNTEND_URL, envVars.BETTER_AUTH_URL, "http://localhost:3000", "http://localhost:5000"],
     credentials : true,

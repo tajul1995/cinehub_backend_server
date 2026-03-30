@@ -9,13 +9,13 @@ model Review {
   bookingId String   @unique
   booking   Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
 
-  userId String @unique
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+   userId String @unique
+   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  movieId String @unique
+  movieId String 
   movie   Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
 
   @@index([movieId])
-  @@index([userId])
+  
   @@map("reviews")
 }

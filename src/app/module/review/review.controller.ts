@@ -28,8 +28,9 @@ const getReview=catchAsync(async(req:Request,res:Response)=>{
 })
 const updateReview=catchAsync(async(req:Request,res:Response)=>{
     const payload=req.body
-    const user=req.user
-    const result=await reviewService.updateReview(payload,user)
+    const user=req.user 
+    const reviewId=req.params.id
+    const result=await reviewService.updateReview(payload,user,reviewId as string)
     sendResponce(res,{
         httpStatuscode:status.OK,
         success:true,
@@ -39,8 +40,9 @@ const updateReview=catchAsync(async(req:Request,res:Response)=>{
     
 })
 const deleteReview=catchAsync(async(req:Request,res:Response)=>{
-    const user=req.user
-    const result=await reviewService.deleteReview(user)
+    // const user=req.user
+    const reviewId=req.params.id
+    const result=await reviewService.deleteReview(reviewId as string)
     sendResponce(res,{
         httpStatuscode:status.OK,
         success:true,

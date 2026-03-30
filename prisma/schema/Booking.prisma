@@ -6,10 +6,10 @@ model Booking {
   createdAt      DateTime          @default(now())
   updatedAt      DateTime          @updatedAt
 
-  movieId String @unique
+  movieId String 
   movie   Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
 
-  userId String @unique
+  userId String 
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   review  Review?

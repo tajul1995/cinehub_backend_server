@@ -25,7 +25,12 @@ interface EnvConfig {
     GOOGLE_CLIENT_ID:string,
     GOOGLE_CLIENT_SECRET:string,
     GOOGLE_CALLBACK_URL:string,
-    FORNTEND_URL:string
+    FORNTEND_URL:string,
+    STRIPE:{
+        STRIPE_SECRET_KEY:string,
+        STRIPE_WEBHOOK_SECRET:string
+
+    }
 
 
 }
@@ -50,7 +55,10 @@ const loadEnv=():EnvConfig=>{
         "GOOGLE_CLIENT_ID",
         "GOOGLE_CLIENT_SECRET",
         "GOOGLE_CALLBACK_URL",
-        "FORNTEND_URL"
+        "FORNTEND_URL",
+        "STRIPE_SECRET_KEY",
+        "STRIPE_WEBHOOK_SECRET"
+
       ]
        requirmentVariables.forEach((variable)=>{
         if(!process.env[variable]){
@@ -79,7 +87,11 @@ const loadEnv=():EnvConfig=>{
             GOOGLE_CLIENT_ID:process.env.GOOGLE_CLIENT_ID as string,
             GOOGLE_CLIENT_SECRET:process.env.GOOGLE_CLIENT_SECRET as string,
             GOOGLE_CALLBACK_URL:process.env.GOOGLE_CALLBACK_URL as string,
-            FORNTEND_URL:process.env.FORNTEND_URL as string
+            FORNTEND_URL:process.env.FORNTEND_URL as string,
+            STRIPE:{
+                STRIPE_SECRET_KEY:process.env.STRIPE_SECRET_KEY as string,
+                STRIPE_WEBHOOK_SECRET:process.env.STRIPE_WEBHOOK_SECRET as string
+            }
         }
 }
 export const envVars=loadEnv()

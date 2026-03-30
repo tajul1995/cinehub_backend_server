@@ -7,4 +7,5 @@ const router=Router()
 router.post('/',checkAuth(Role.USER,Role.ADMIN),bookingController.createBooking)
 router.get('/',checkAuth(Role.USER,Role.ADMIN),bookingController.getSingleBooking)
 router.patch('/',checkAuth(Role.USER,Role.ADMIN),bookingController.updateBooking)
+router.post("/initiate-payment/:id", checkAuth(Role.USER), bookingController.initiatePayment);
 export const bookingRoute=router

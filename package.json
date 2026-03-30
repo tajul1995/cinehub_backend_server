@@ -13,6 +13,7 @@
     "pull": "prisma db pull",
     "studio": "prisma studio",
     "dev": "tsx watch src/server.ts",
+    "stripe:webhook": "stripe listen --forward-to localhost:5000/webhook",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -34,6 +35,8 @@
     "multer": "^2.1.1",
     "nodemailer": "^8.0.4",
     "pg": "^8.20.0",
+    "stripe": "^21.0.1",
+    "uuid": "^13.0.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {

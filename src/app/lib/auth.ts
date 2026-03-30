@@ -7,6 +7,27 @@ import { sendEmail } from "../utiles/email";
 import { envVars } from "../../config/env";
 
 
+// model User {
+//   id            String    @id
+//   name          String
+//   email         String
+//   role          Role      @default(USER)
+//   status        UserStatus @default(ACTIVE)
+  
+//   isDeleted     Boolean   @default(false)
+//   deletedAt     DateTime?
+//   emailVerified Boolean   @default(false)
+//   image         String?
+//   createdAt     DateTime  @default(now())
+//   updatedAt     DateTime  @updatedAt
+//   bookings      Booking[]
+//   reviews       Review[]
+//   sessions      Session[]
+//   accounts      Account[]
+
+//   @@unique([email])
+//   @@map("user")
+// }
 
 
 
@@ -45,6 +66,7 @@ export const auth = betterAuth({
             required:false,
             defaultValue:null
         }
+       
     }
   },
   socialProviders:{

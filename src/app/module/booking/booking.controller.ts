@@ -42,8 +42,22 @@ const updateBooking=catchAsync(async(req:Request,res:Response)=>{
         })
     
 })
+const initiatePayment = catchAsync(async (req: Request, res: Response) => {
+    const bookingId = req.params.id;
+    const user = req.user;
+    const paymentInfo = await bookingService.initiatePayment(bookingId as string, user);
+
+    sendResponce(res, {
+        success: true,
+        httpStatuscode: status.OK,
+        message: 'Payment initiated successfully',
+        data: paymentInfo
+    });
+});
+
 export const bookingController={
     createBooking,
     getSingleBooking,
-    updateBooking
+    updateBooking,
+    initiatePayment
 }
