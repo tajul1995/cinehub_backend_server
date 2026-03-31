@@ -82,7 +82,14 @@ const loginUser= async(payload:LoginPayload)=>{
     return {...userData,accessToken,refreshToken}
 }
 const getMe=async(id:string)=>{
-    const userExists=await prisma.user.findUnique({where:{id}})
+    const userExists=await prisma.user.findUnique({where:{id},
+    include:{bookings:{
+        include:{movie:{
+            include:{
+                reviews:true
+            }
+        }}
+    }}})
     if(!userExists){
         throw new AppError(status.NOT_FOUND,"User not found")
     }

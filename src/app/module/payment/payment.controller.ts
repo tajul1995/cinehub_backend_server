@@ -56,7 +56,23 @@ const totalPayment = catchAsync(async (req : Request, res : Response) => {
         data : result
     })
 })
+
+const updatePaymentStatus = catchAsync(async (req : Request, res : Response) => {
+    const bookingId = req.params.id;
+    const result = await PaymentService.updatePaymentStatus(bookingId as string);
+    sendResponce(res, {
+        httpStatuscode : status.OK,
+        success : true,
+        message : "Payment status updated successfully",
+        data : result
+    })
+})
+
+
+
+
 export const PaymentController = {
     handleStripeWebhookEvent,
-    totalPayment
+    totalPayment,
+    updatePaymentStatus
 }

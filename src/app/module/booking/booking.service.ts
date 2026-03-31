@@ -80,7 +80,7 @@ const createBooking=async(payload:IBookAppointmentPayload,user:IRequestUser)=>{
 
    
     return {
-        appointment : result.bookingData,
+        booking : result.bookingData,
         payment : result.paymentData,
         paymentUrl : result.paymentUrl,
     };
@@ -107,7 +107,7 @@ const initiatePayment = async (bookingId: string, user : IRequestUser) => {
     const bookingData = await prisma.booking.findUniqueOrThrow({
         where: {
             id: bookingId,
-                userId: userData.id,
+             userId: userData.id,
         },
         include: {
             
@@ -151,7 +151,7 @@ const initiatePayment = async (bookingId: string, user : IRequestUser) => {
             paymentId: bookingData.payment.id,
         },
 
-        success_url: `${envVars.FORNTEND_URL}/dashboard/paymentHistory?booking_id=${bookingData.id}&payment_id=${bookingData.payment.id}`,
+        success_url: `${envVars.FORNTEND_URL}/dashboard/paymentHistory`,
 
         // cancel_url: `${envVars.FRONTEND_URL}/dashboard/payment/payment-failed`,
         cancel_url: `${envVars.FORNTEND_URL}?error=payment_cancelled`,

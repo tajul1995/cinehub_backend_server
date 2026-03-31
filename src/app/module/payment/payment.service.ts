@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Stripe from "stripe";
 import { prisma } from "../../lib/prisma";
-import { PaymentStatus } from "../../../generated/prisma/enums";
+import { AppointmentStatus, PaymentStatus } from "../../../generated/prisma/enums";
 // import { sendEmail } from "../../utils/email";
 // import { uploadFileToCloudinary } from "../../../config/cloudinary.config";
 // import { generateInvoicePdf } from "./payment.utiles";
@@ -194,7 +194,40 @@ const movieCount= payments.reduce((sum, p) => {
   };
 };
 
+const updatePaymentStatus = async (bookingId: string) => {
+  const bookingData = await prisma.booking.findUniqueOrThrow({
+    where: {
+      id: bookingId,
+    },
+  });
+
+  await prisma.$transaction(async (tx) => {
+   
+    await tx.payment.update({
+      where: {
+        bookingId: bookingData.id,
+      },
+      data: {
+        status: PaymentStatus.PAID,
+      },
+    });
+
+    
+    await tx.booking.update({
+      where: {
+        id: bookingData.id,
+      },
+      data: {
+        paymentStatus: PaymentStatus.PAID,
+        status: AppointmentStatus.COMPLETED,
+      },
+    });
+  });
+
+  return { message: "Payment updated successfully" };
+};
 export const PaymentService = {
     handlerStripeWebhookEvent,
-    totalPayment
+    totalPayment,
+    updatePaymentStatus
 }

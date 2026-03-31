@@ -187,6 +187,8 @@ const getAllMovie=async (query: any) => {
         cast: true,
         directors: true,
         producers: true,
+        bookings: true,
+        reviews: true,
       },
     }),
 
