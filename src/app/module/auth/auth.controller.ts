@@ -141,7 +141,7 @@ const resetPassword=catchAsync(async(req:Request,res:Response)=>{
 
 })
 const googleLogin=catchAsync(async(req:Request,res:Response)=>{
-    const redirectPath = req.query.redirect || "/dashboard";
+    const redirectPath = req.query.redirect || "/dashboard/";
     console.log(redirectPath)
 
     const encodedRedirectPath = encodeURIComponent(redirectPath as string);
@@ -186,7 +186,7 @@ const googleLoginSuccess=catchAsync(async(req:Request,res:Response)=>{
 
     tokenUtils.setAccessTokenCookie(res, accessToken);
     tokenUtils.setRefreshTokenCookie(res, refreshToken);
-//  ?redirect=//profile -> /profile
+
 
     const isValidRedirectPath = redirectPath.startsWith("/") && !redirectPath.startsWith("//");
     const finalRedirectPath = isValidRedirectPath ? redirectPath : "/dashboard";

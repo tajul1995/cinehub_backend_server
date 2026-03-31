@@ -23,11 +23,11 @@ app.use(cors({
 app.use("/api/auth", toNodeHandler(auth))
 app.use(express.urlencoded({ extended: true }));
 
-// Middleware to parse JSON bodies
+
 app.use(express.json());
 app.use(cookieParser())
  app.use('/api/v1',indexRoute)
-// Basic route
+
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello, TypeScript + Express!');
 });

@@ -54,10 +54,21 @@ const initiatePayment = catchAsync(async (req: Request, res: Response) => {
         data: paymentInfo
     });
 });
-
+const specificeBookingbtId=catchAsync(async(req:Request,res:Response)=>{
+    const {id}=req.params
+    const user=req.user
+    const result=await bookingService.specificeBookingbtId(id as string,user.userId)
+    sendResponce(res,{
+        httpStatuscode:status.OK,
+        success:true,
+        message:"get single booking",
+        data:result
+    })
+})
 export const bookingController={
     createBooking,
     getSingleBooking,
     updateBooking,
-    initiatePayment
+    initiatePayment,
+    specificeBookingbtId
 }

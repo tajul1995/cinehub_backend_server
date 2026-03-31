@@ -65,10 +65,10 @@ const createBooking=async(payload:IBookAppointmentPayload,user:IRequestUser)=>{
                 paymentId : paymentData.id,
             },
 
-            success_url: `${envVars.FORNTEND_URL}/dashboard/payment/payment-success`,
+            success_url: `${envVars.FORNTEND_URL}/dashboard/paymentHistory`,
 
             // cancel_url: `${envVars.FRONTEND_URL}/dashboard/payment/payment-failed`,
-            cancel_url: `${envVars.FORNTEND_URL}/dashboard/appointments`,
+            cancel_url: `${envVars.FORNTEND_URL}/dashboard/paymentHistory`,
         })
 
         return {
@@ -161,9 +161,19 @@ const initiatePayment = async (bookingId: string, user : IRequestUser) => {
         paymentUrl: session.url,
     }
 }
+
+const specificeBookingbtId= async(movieId:string,userId:string)=>{
+    const bookingData= await prisma.booking.findFirst({where:{movieId,userId}})
+    if(!bookingData){
+        throw new AppError(status.NOT_FOUND, "Booking not found for this movie");
+    }
+    return bookingData;
+}
+
 export const bookingService={
     createBooking,
     getSingleBooking,
     updateBooking,
-    initiatePayment
+    initiatePayment,
+    specificeBookingbtId
 }

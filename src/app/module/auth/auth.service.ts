@@ -86,7 +86,8 @@ const getMe=async(id:string)=>{
     include:{bookings:{
         include:{movie:{
             include:{
-                reviews:true
+                reviews:true,
+                bookings:true,
             }
         }}
     }}})

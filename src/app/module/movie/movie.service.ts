@@ -209,6 +209,9 @@ const getMovieById=async(id:string)=>{return await prisma.movie.findUnique({wher
 
 })}
 const deleteMovieById=async(id:string)=>{return await prisma.movie.delete({where:{id}})}
+
+
+
 export const movieService={
     createMovie,
     getAllMovie,
