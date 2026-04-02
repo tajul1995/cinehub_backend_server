@@ -3,7 +3,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Stripe from "stripe";
 import { prisma } from "../../lib/prisma";
-import { AppointmentStatus, PaymentStatus } from "../../../generated/prisma/enums";
+import {  PaymentStatus } from "../../../generated/prisma/enums";
+// import AppError from "../../errorHelpers/AppError";
+// import status from "http-status";
 // import { sendEmail } from "../../utils/email";
 // import { uploadFileToCloudinary } from "../../../config/cloudinary.config";
 // import { generateInvoicePdf } from "./payment.utiles";
@@ -195,37 +197,16 @@ const movieCount= payments.reduce((sum, p) => {
 };
 
 const updatePaymentStatus = async (bookingId: string) => {
-  const bookingData = await prisma.booking.findUniqueOrThrow({
+  return await prisma.payment.update({
     where: {
-      id: bookingId,
+      bookingId: bookingId,
     },
-  });
-
-  await prisma.$transaction(async (tx) => {
-   
-    await tx.payment.update({
-      where: {
-        bookingId: bookingData.id,
-      },
-      data: {
-        status: PaymentStatus.PAID,
-      },
-    });
-
-    
-    await tx.booking.update({
-      where: {
-        id: bookingData.id,
-      },
-      data: {
-        paymentStatus: PaymentStatus.PAID,
-        status: AppointmentStatus.COMPLETED,
-      },
-    });
-  });
-
-  return { message: "Payment updated successfully" };
+    data:{
+        status:"PAID"
+    }
+  })
 };
+
 export const PaymentService = {
     handlerStripeWebhookEvent,
     totalPayment,

@@ -57,18 +57,29 @@ const totalPayment = catchAsync(async (req : Request, res : Response) => {
     })
 })
 
-const updatePaymentStatus = catchAsync(async (req : Request, res : Response) => {
+const updatePaymentStatus = async (req: Request, res: Response) => {
+  try {
     const bookingId = req.params.id;
-    const result = await PaymentService.updatePaymentStatus(bookingId as string);
+
+    const result = await PaymentService.updatePaymentStatus(
+      bookingId as string
+    );
+
     sendResponce(res, {
-        httpStatuscode : status.OK,
-        success : true,
-        message : "Payment status updated successfully",
-        data : result
-    })
-})
+      httpStatuscode: status.OK,
+      success: true,
+      message: "Payment status updated successfully",
+      data: result,
+    });
+  } catch (error) {
+    console.error(error);
 
-
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
 
 
 export const PaymentController = {

@@ -4,7 +4,7 @@ import { stripe } from "../../../config/stripe.config";
 import AppError from "../../errorHelpers/AppError";
 import { IRequestUser } from "../../interfaces/user.interface";
 import { prisma } from "../../lib/prisma";
-import { IBookAppointmentPayload, IUpdateBookingPayload } from "./booking.interface";
+import { IBookAppointmentPayload } from "./booking.interface";
 import { AppointmentStatus, PaymentStatus } from "../../../generated/prisma/enums";
 import { v7 as uuidv7 } from "uuid";
 
@@ -18,7 +18,9 @@ const createBooking=async(payload:IBookAppointmentPayload,user:IRequestUser)=>{
                 movieId : payload.movieId,
                 userId : user.userId,
                 
-            }
+                
+            },
+            
         });
 
         // await tx.doctorSchedules.update({
@@ -87,14 +89,20 @@ const createBooking=async(payload:IBookAppointmentPayload,user:IRequestUser)=>{
     
 }
 const getSingleBooking=async(userId:string)=>{
-    return await prisma.booking.findFirst({where:{userId:userId}})
+    return await prisma.booking.findMany({where:{userId:userId},
+        include:{
+            payment:true,
+            movie:true,
+            
+        }
+    })
 }
-const updateBooking=async(payload:IUpdateBookingPayload,user:IRequestUser)=>{
-    const booking = await prisma.booking.findFirst({where:{userId:user.userId}});
+const updateBooking=async(bookingId:string,user:IRequestUser)=>{
+    const booking = await prisma.booking.findFirst({where:{userId:user.userId,id:bookingId}});
     if(!booking){
         throw new AppError(status.NOT_FOUND, "Booking not found");
     }
-    return await prisma.booking.update({where:{id:booking.id},data:payload})
+    return await prisma.booking.update({where:{id:booking.id},data:{status:AppointmentStatus.COMPLETED,paymentStatus:PaymentStatus.PAID}})
     
 }
 const initiatePayment = async (bookingId: string, user : IRequestUser) => {
@@ -119,7 +127,7 @@ const initiatePayment = async (bookingId: string, user : IRequestUser) => {
         throw new AppError(status.NOT_FOUND, "Appointment not found");
     }
 
-    if(!bookingData.payment || !bookingData.payment){
+    if(!bookingData.payment ){
         throw new AppError(status.NOT_FOUND, "Payment data not found for this appointment");
     }
 

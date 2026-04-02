@@ -27,7 +27,7 @@ const updateReview=async(Payload:IReviewUpdatePayload,user:IRequestUser,reviewId
      if(user.role===Role.ADMIN){
          return await prisma.review.update({where:{id:reviewId},data:Payload})
      }
-    return await prisma.review.update({where:{userId:user.userId},data:Payload})
+    return await prisma.review.update({where:{id:reviewId,userId:user.userId},data:{userId:user.userId,...Payload}})
     
 }
 const deleteReview=async(reviewId:string)=>{

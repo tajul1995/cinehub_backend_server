@@ -84,10 +84,12 @@ const loginUser= async(payload:LoginPayload)=>{
 const getMe=async(id:string)=>{
     const userExists=await prisma.user.findUnique({where:{id},
     include:{bookings:{
-        include:{movie:{
+        include:{
+            payment:true,
+            movie:{
             include:{
                 reviews:true,
-                bookings:true,
+                bookings:true
             }
         }}
     }}})

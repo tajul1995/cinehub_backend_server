@@ -30,10 +30,10 @@ const getSingleBooking=catchAsync(async(req:Request,res:Response)=>{
     
 })
 const updateBooking=catchAsync(async(req:Request,res:Response)=>{
-        const payload=req.body
+        const bookingId=req.params.id
         const user=req.user
         
-        const result=await bookingService.updateBooking(payload,user)
+        const result=await bookingService.updateBooking(bookingId as string,user)
         sendResponce(res,{
             httpStatuscode:status.OK,
             success:true,
