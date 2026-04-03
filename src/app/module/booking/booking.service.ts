@@ -5,7 +5,7 @@ import AppError from "../../errorHelpers/AppError";
 import { IRequestUser } from "../../interfaces/user.interface";
 import { prisma } from "../../lib/prisma";
 import { IBookAppointmentPayload } from "./booking.interface";
-import { AppointmentStatus, PaymentStatus } from "../../../generated/prisma/enums";
+import { AppointmentStatus, PaymentStatus, Role } from "../../../generated/prisma/enums";
 import { v7 as uuidv7 } from "uuid";
 
 const createBooking=async(payload:IBookAppointmentPayload,user:IRequestUser)=>{
@@ -98,6 +98,9 @@ const getSingleBooking=async(userId:string)=>{
     })
 }
 const updateBooking=async(bookingId:string,user:IRequestUser)=>{
+    if(user.role===Role.ADMIN){
+        throw new AppError(status.UNAUTHORIZED, "ADMIN deos not have permission for payment");
+    }
     const booking = await prisma.booking.findFirst({where:{userId:user.userId,id:bookingId}});
     if(!booking){
         throw new AppError(status.NOT_FOUND, "Booking not found");

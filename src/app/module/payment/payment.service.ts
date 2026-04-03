@@ -171,23 +171,20 @@ const handlerStripeWebhookEvent = async (event : Stripe.Event) =>{
 }
 
 const totalPayment = async () => {
-  const payments = await prisma.payment.findMany({
+  const payments = await prisma.booking.findMany({
     where: {
-      status: "PAID",
+      paymentStatus: "PAID",
     },
     include: {
-      booking: {
-        include: {
-          movie: true,
-        },
-      },
+      movie: true,
+      payment: true,
     },
   });
 const movieCount= payments.reduce((sum, p) => {
-    return sum + (p.booking?.movie ? 1 : 0);
+    return sum + (p.movie ? 1 : 0);
   }, 0);
   const total = payments.reduce((sum, p) => {
-    return sum + (p.booking?.movie?.price || 0);
+    return sum + (p.movie?.price || 0);
   }, 0);
 
   return {

@@ -6,6 +6,29 @@ import { IReviewPayload, IReviewUpdatePayload } from './review.interface';
 
 
 const createReview=async(Payload:IReviewPayload,user:IRequestUser)=>{
+//     const existingReview = await prisma.review.findFirst({
+//   where: {
+//     userId: user.userId,
+//     movieId: Payload.movieId
+//   }
+// })
+
+// if (existingReview) {
+//   return await prisma.review.create({
+//     where: { id: existingReview.id },
+//     data:{
+//         ...Payload
+//     }
+//   })
+// }
+    const findBooking= await prisma.booking.findFirst({where:{movieId:Payload.movieId,userId:user.userId}})
+    if(!findBooking){
+        throw new Error("You have not booked this movie")
+
+    }
+    if(findBooking){
+        Payload.bookingId=findBooking.id
+    }
     return await prisma.review.create({data:{...Payload,userId:user.userId}})
 }
 const getReview=async(user:IRequestUser)=>{

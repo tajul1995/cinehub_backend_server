@@ -160,6 +160,7 @@ const getAllMovie=async (query: any) => {
       {
         categories: {
           has: q,
+          mode: "insensitive",
         },
       },
 
